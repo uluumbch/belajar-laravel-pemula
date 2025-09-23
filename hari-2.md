@@ -129,3 +129,72 @@
         </div>
     </div>
 ```
+
+### Penambahan kode baru pada file `resources/views/welcome.blade.php` untuk membuat section mengapa memilih kami
+```
+{{-- memilih kami section --}}
+    <div class="flex">
+
+        <div class="w-1/2 pr-4">
+            <img src="{{ asset('gambar/Gemini_Generated_Image_utpskjutpskjutps.png') }}"
+                class="rounded-2xl object-cover" />
+        </div>
+
+        <div class="w-1/2 flex flex-col justify-center">
+            <h2 class="text-3xl font-bold mb-4">
+                Mengapa memilih kami?
+            </h2>
+            <ul class="space-y-6">
+                <li class="space-y-2">
+                    <span
+                        class="inline-flex justify-center items-center bg-purple-800 text-white p-2 rounded-full h-8 w-8">1</span>
+                    <span class="font-semibold">Armada terbaru & terawat</span>
+
+                    <p>
+                        Nikmati kenyamanan berkendara dengan pilihan mobil yang selalu bersih, terawat, dan siap
+                        menemani
+                        perjalanan Anda.
+                    </p>
+                </li>
+                <li class="space-y-2">
+                    <span
+                        class="inline-flex justify-center items-center bg-purple-800 text-white p-2 rounded-full h-8 w-8">2</span>
+                    <span class="font-semibold">Harga Transparan & Terjangkau</span>
+
+                    <p>
+                        Tanpa biaya tersembunyi, tanpa kejutan. Semua harga jelas sejak awal, sesuai dengan kebutuhan
+                        Anda.
+                    </p>
+                </li>
+                <li class="space-y-2">
+                    <span
+                        class="inline-flex justify-center items-center bg-purple-800 text-white p-2 rounded-full h-8 w-8">3</span>
+                    <span class="font-semibold">Proses Cepat & Mudah</span>
+
+                    <p>
+                        Booking mobil dalam hitungan menit, tanpa ribet. Cukup pilih mobil, tentukan waktu, dan Anda siap berangkat!
+                    </p>
+                </li>
+                <li class="space-y-2"> 
+                    <span
+                        class="inline-flex justify-center items-center bg-purple-800 text-white p-2 rounded-full h-8 w-8">4</span>
+                    <span class="font-semibold">Layanan Pelanggan 24/7</span>
+
+                    <p>
+                        Tim kami siap membantu Anda kapan saja, di mana saja, agar perjalanan Anda tetap aman dan nyaman.
+                    </p>
+                </li>
+                <li class="space-y-2">
+                    <span
+                        class="inline-flex justify-center items-center bg-purple-800 text-white p-2 rounded-full h-8 w-8">5</span>
+                    <span class="font-semibold">Fleksibel untuk Semua Kebutuhan</span>
+
+                    <p>
+                        Mulai dari perjalanan bisnis, liburan keluarga, hingga kebutuhan harian — kami punya mobil yang tepat untuk Anda.
+                    </p>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+```
