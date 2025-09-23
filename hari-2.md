@@ -24,7 +24,7 @@
 
 
 ### Penambahan kode baru di file `resources/views/welcome.blade.php`
-```
+```blade
 {{-- feature section --}}
     <div class="grid grid-cols-3">
         <div class="text-center mt-2 space-y-2 p-4">
@@ -131,7 +131,7 @@
 ```
 
 ### Penambahan kode baru pada file `resources/views/welcome.blade.php` untuk membuat section mengapa memilih kami
-```
+```blade
 {{-- memilih kami section --}}
     <div class="flex">
 
@@ -201,7 +201,7 @@
 
 
 ### Penambahan kode baru di file `resources/views/welcome.blade.php` untuk membuat section pilihan mobil
-```
+```blade
 {{-- pilihan mobil --}}
     <div class="mt-4">
         <div class="flex items-center justify-between  mx-6">
