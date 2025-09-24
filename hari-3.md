@@ -20,5 +20,6 @@
    $user->name = "test";
    $user->email = "test@mail.com";
    $user->password = bcrypt("password");
+   $user->save();
    ```  
 4. untuk konfirmasi, cek database dengan phpmyadmin atau heidisql, pastikan terdapat data baru di table `users`
