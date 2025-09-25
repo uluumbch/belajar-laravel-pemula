@@ -23,3 +23,18 @@
    $user->save();
    ```  
 4. untuk konfirmasi, cek database dengan phpmyadmin atau heidisql, pastikan terdapat data baru di table `users`
+
+
+### Mengganti password user yg sudah terbuat
+1. Buka terminal(git bash)
+2. Jalankan perintah `php artisan tinker`
+3. Shell tinker akan terbuka lalu jalankan perintah berikut
+   Sesuaikan `test@mail.com` dengan email yang sudah ada dan `password` sesuai yg ingin diganti
+   ```bash
+   User::whereEmail('test@mail.com')->update(['password' => bcrypt('password')])
+   ```
+4. Contoh hasil dari perintah diatas sebagai berikut.
+   ```bash
+   [!] Aliasing 'User' to 'App\Models\User' for this Tinker session.
+    = 1
+   ```
