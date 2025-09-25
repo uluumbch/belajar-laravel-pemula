@@ -238,3 +238,133 @@
     php artisan storage:link
     ```
 
+## Membuat tampilan edit kendaraan
+1. Buat file baru untuk views, pada halaman admin dengan nama `resources\views\admin\edit_kendaraan.blade.php`. File ini akan digunakan untuk form edit, mirip seperti form tambah data
+2. Isikan file `edit_kendaraan.blade.php` dengan kode berikut
+   ```html
+   @extends('layouts.admin')
+   @section('content')
+       <main class="flex-1 p-6">
+           <h1 class="text-3xl font-semibold">
+               Edit Kendaraan
+           </h1>
+   
+           <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 mt-4" action="{{ route('admin.kendaraan.update', $kendaraan->id) }}" method="POST" enctype="multipart/form-data">
+               @csrf
+               @method('PUT')
+               <div class="mb-4">
+                   <label class="block text-gray-700 text-sm font-bold mb-2" for="nama">
+                       Nama Kendaraan
+                   </label>
+                   <input
+                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                       name="nama" type="text" value="{{ $kendaraan->name }}">
+               </div>
+               <div class="mb-4">
+                   <label class="block text-gray-700 text-sm font-bold mb-2" for="harga">
+                       Harga
+                   </label>
+                   <input
+                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                       name="harga" type="number" value="{{ $kendaraan->harga }}">
+               </div>
+               <div class="mb-4">
+                   <label class="block text-gray-700 text-sm font-bold mb-2" for="gambar">
+                       Gambar
+                   </label>
+                   <input
+                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                       name="gambar" type="file">
+                   @if ($kendaraan->gambar)
+                       <img src="{{ asset('storage/' . $kendaraan->gambar) }}" alt="{{ $kendaraan->name }}" class="w-20 mt-2">
+                   @endif
+               </div>
+               <div class="mb-4">
+                   <button
+                       class="bg-purple-800 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                       type="submit">
+                       Update Kendaraan
+                   </button>
+               </div>
+           </form>
+       </main>
+   @endsection
+   ```
+3. Kode diatas akan membuat tampilan form yang mirip seperti tambah data, tetapi kita gunakan untuk mengedit data yang sudah ada.
+4. Buka file `app\Http\Controllers\KendaraanController.php` kita akan membuat fungsi baru untuk menampilkan `view` edit, fungsi tersebut kita beri nama `edit`
+5. Tambahkan kode berikut untuk menampilkan view edit
+   ```php
+   // kode lain diatas
+   public function edit($id)
+    {
+        $kendaraan = Kendaraan::findOrFail($id);
+        return view('admin.edit_kendaraan', ['kendaraan' => $kendaraan]);
+    }
+   ```
+6. Kita perlu mendefinisikan route, buka file `routes\web.php` kita tambahkan kode berikut dibaris bawah untuk mendefiniiskan route ke view edit
+   ```php
+   // kode lain diatas
+   Route::get('/admin/kendaraan/{id}/edit', [KendaraanController::class, 'edit'])
+       ->middleware('auth')
+       ->name('admin.kendaraan.edit');
+   ```
+## Membuat logika/fungsionalitas untuk update data kendaraan
+1. Untuk menambahkan logika update, kita perlu tambahkan fungsi baru pada file `app\Http\Controllers\KendaraanController.php`. Kita akan membuat fungsi baru dengan nama `update`
+2. Tambahkan kode berikut dibaris bawah
+   ```php
+   // kode lain diatas
+   public function update(Request $request, $id)
+    {
+        $kendaraan = Kendaraan::findOrFail($id);
+
+        // Validasi input
+        $nama = $request->input('nama');
+        $harga = $request->input('harga');
+
+        // Handle file upload jika ada
+        if ($request->hasFile('gambar')) {
+            $imagePath = $request->file('gambar')->store('kendaraan', 'public');
+            $kendaraan->gambar = $imagePath;
+        }
+
+        // Update data kendaraan
+        $kendaraan->name = $nama;
+        $kendaraan->harga = $harga;
+        $kendaraan->save();
+
+        return redirect()->route('admin.kendaraan.index')->with('success', 'Kendaraan berhasil diperbarui.');
+    }
+   ```
+3. Selanjutnya kita akan mendefinisikan route untuk mengarahkan ke logika update data pada controller, buka file `routes/web.php`. Kita buat routes baru dengan metode `put`.
+   Untuk edit data, kita perlu membuat routes dengan metode `put` bukan `post` atau `get`.
+   ```php
+   // kode lain diatas
+   Route::put('/admin/kendaraan/{id}', [KendaraanController::class, 'update'])
+       ->middleware('auth')
+       ->name('admin.kendaraan.update');
+   ```
+## Membuat logika untuk mengapus data
+1. Buka file `app\Http\Controllers\KendaraanController.php`. kita akan membuat logika baru untuk mengapus data dengan membuat fungsi baru bernama `destroy`
+2. Berikut kode lengkap untuk logika destroy
+   ```php
+   // kode lain diatas
+   public function destroy($id)
+    {
+        $kendaraan = Kendaraan::findOrFail($id);
+        
+        unlink(public_path('storage/' . $kendaraan->gambar));
+
+        $kendaraan->delete();
+
+        return redirect()->route('admin.kendaraan.index')->with('success', 'Kendaraan berhasil dihapus.');
+    }
+   ```
+3. Selanjutnya, kita buat route untuk mengarahkan ke logika `destroy` yang ada di controller. buka file `routes/web.php` lalu tambahkan kode berikut dibaris bawah
+   ```php
+   // kode lain diatas
+   Route::delete('/admin/kendaraan/{id}', [KendaraanController::class, 'destroy'])
+    ->middleware('auth')
+    ->name('admin.kendaraan.destroy');
+   ```
+4. Route yang digunakan untuk mengapus data, perlu menggunakan metode `delete`.
+5. Terakhir, pastikan pada file `resources\views\admin\kendaraan.blade.php` telah menambahkan route yang mengarah pada hapus kendaraan di file routes.
