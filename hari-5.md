@@ -94,7 +94,7 @@
         {
             Schema::create('kendaraans', function (Blueprint $table) {
                 $table->id();
-                $table->string('name');
+                $table->string('nama');
                 $table->integer('harga');
                 $table->string('gambar')->nullable();
                 $table->timestamps();
@@ -121,7 +121,7 @@
     
     class Kendaraan extends Model
     {
-        protected $fillable = ['name', 'harga', 'gambar'];
+        protected $fillable = ['nama', 'harga', 'gambar'];
     }
 
     ```
@@ -148,7 +148,7 @@
         // Simpan data kendaraan ke database
         Kendaraan::create(
             [
-                'name' => $nama,
+                'nama' => $nama,
                 'harga' => $harga,
                 'gambar' => $imagePath,
             ]
@@ -210,7 +210,7 @@
                             <img src="{{ asset('storage/' . $item->gambar) }}" alt="{{ $item->name }}" class="w-20 mx-auto" />
                         </td>
                         <td>
-                            {{ $item->name }}
+                            {{ $item->nama }}
                         </td>
                         <td>
                             {{ $item->harga }}
@@ -258,7 +258,7 @@
                    </label>
                    <input
                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                       name="nama" type="text" value="{{ $kendaraan->name }}">
+                       name="nama" type="text" value="{{ $kendaraan->nama }}">
                </div>
                <div class="mb-4">
                    <label class="block text-gray-700 text-sm font-bold mb-2" for="harga">
@@ -328,7 +328,7 @@
         }
 
         // Update data kendaraan
-        $kendaraan->name = $nama;
+        $kendaraan->nama = $nama;
         $kendaraan->harga = $harga;
         $kendaraan->save();
 
